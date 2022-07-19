@@ -18,7 +18,7 @@ public class ListLayout extends LinearLayout {
     /**
      * 适配器
      */
-    private ListLayout.Adapter mAdapter;
+    private Adapter mAdapter;
     /**
      * 列表数据观察者，当数据notifyChange时，重新填充子View
      */
@@ -87,8 +87,6 @@ public class ListLayout extends LinearLayout {
                         ListLayout.LayoutParams.WRAP_CONTENT
                 );
             }
-            //添加子View
-            addView(viewHolder.itemView, itemLp);
             //设置相关属性
             viewHolder.setAdapter(mAdapter);
             viewHolder.setItemViewType(itemViewType);
@@ -96,11 +94,13 @@ public class ListLayout extends LinearLayout {
             viewHolder.setItemId(itemId);
             //渲染ViewHolder，内部会渲染布局
             mAdapter.onBindViewHolder(viewHolder, position);
+            //添加子View
+            addView(viewHolder.itemView, itemLp);
         }
     }
 
     public abstract static class Adapter<VH extends ViewHolder> {
-        private final ListLayout.AdapterDataObservable mObservable = new ListLayout.AdapterDataObservable();
+        private final AdapterDataObservable mObservable = new AdapterDataObservable();
 
         public abstract VH onCreateViewHolder(ViewGroup parent, int itemType);
 
@@ -126,14 +126,14 @@ public class ListLayout extends LinearLayout {
         /**
          * 注册列表数据观察者
          */
-        public void registerAdapterDataObserver(ListLayout.AdapterDataObserver observer) {
+        public void registerAdapterDataObserver(AdapterDataObserver observer) {
             mObservable.registerObserver(observer);
         }
 
         /**
          * 取消注册数据观察者
          */
-        public void unregisterAdapterDataObserver(ListLayout.AdapterDataObserver observer) {
+        public void unregisterAdapterDataObserver(AdapterDataObserver observer) {
             mObservable.unregisterObserver(observer);
         }
 
@@ -153,7 +153,7 @@ public class ListLayout extends LinearLayout {
         /**
          * 适配器
          */
-        private ListLayout.Adapter adapter;
+        private Adapter adapter;
         /**
          * 条目View
          */
@@ -183,11 +183,11 @@ public class ListLayout extends LinearLayout {
             return mItemViewType;
         }
 
-        public void setAdapter(ListLayout.Adapter adapter) {
+        public void setAdapter(Adapter adapter) {
             this.adapter = adapter;
         }
 
-        public ListLayout.Adapter getAdapter() {
+        public Adapter getAdapter() {
             return adapter;
         }
 
@@ -216,7 +216,7 @@ public class ListLayout extends LinearLayout {
     /**
      * 列表数据观察者，当数据notifyChange时，重新填充子View
      */
-    private class ListLayoutDataObserver extends ListLayout.AdapterDataObserver {
+    private class ListLayoutDataObserver extends AdapterDataObserver {
         ListLayoutDataObserver() {
         }
 
